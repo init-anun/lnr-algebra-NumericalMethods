@@ -1,6 +1,6 @@
 '''
     Using Gaussian Eliminatin, solve the following system of linear equations:
-        2x - 3y - z = 1
+        2x - 3y - z = 3
         3x + 2y - 5z = -9
         2x + 4y -1z = -5
 '''
@@ -9,7 +9,7 @@ import numpy as np
 
 class Solution:
 
-    def gaussElimination(self, A, b):
+    def gaussElimination(self, A, b)-> np.ndarray:
 
         n = len(A)
         A = np.array(A, dtype=float)
@@ -33,5 +33,20 @@ class Solution:
 
         # backward substitution
         x = np.zeros(n)
-        
-        for i in range(n - 1, -1, -1):
+        x[n-1] = Ab[n-1][n] / Ab[n-1][n-1]
+
+        for j in range(n-2, -1, -1):
+            sum = 0
+            for i in range(j + 1, n):
+                sum += Ab[j][i] * x[i]
+            x[j] = (Ab[j][n] - sum) / Ab[j][j]
+
+        return x
+
+if __name__ == "__main__":
+    A = [[2, -3, -1], [3, 2, -5], [2, 4, -1]]
+    b = [3, -9, -5]
+
+    solution = Solution()
+    result = solution.gaussElimination(A, b)
+    print("Solution:", result)
